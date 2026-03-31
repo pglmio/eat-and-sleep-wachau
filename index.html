@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eat & Sleep Wachau | Heurigen & Pensioni 2026</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wachau: {
+                            green: '#748A66', // Verde vigneto
+                            cream: '#F9F6F0', // Pietra castelli
+                            gold: '#E5A93D',  // Oro Marille
+                            dark: '#2D3748'   // Antracite elegante
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #F9F6F0; scroll-behavior: smooth; font-family: 'Inter', sans-serif; }
+        .card-hover { transition: all 0.25s ease-in-out; }
+        .card-hover:hover { transform: translateY(-5px); shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #748A66; }
+        /* Pulizia Google Translate */
+        .goog-te-gadget { font-family: inherit !important; color: transparent !important; }
+        .goog-te-gadget .goog-te-combo { padding: 0.6rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; background: white; cursor: pointer; width: 100%; }
+        .goog-logo-link, .goog-te-banner-frame { display: none !important; }
+        body { top: 0px !important; }
+    </style>
+</head>
+<body class="text-wachau-dark antialiased pb-10">
+
+    <header class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-wachau-green via-wachau-gold to-wachau-green"></div>
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left">
+                <h1 class="text-2xl font-extrabold tracking-tight">
+                    Eat & Sleep <span class="text-wachau-green">Wachau</span> 🍷🛏️
+                </h1>
+                <p class="text-xs text-gray-500 font-medium uppercase tracking-widest">Guida Interattiva 2026</p>
+            </div>
+            <div id="google_translate_element" class="scale-90"></div>
+        </div>
+    </header>
+
+    <section class="max-w-6xl mx-auto px-4 pt-10 pb-6">
+        <div class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100 mb-8">
+            <h2 class="text-3xl font-bold mb-6 text-center md:text-left">Dove vuoi andare oggi?</h2>
+            <div class="flex flex-col md:flex-row gap-4">
+                <input type="text" id="searchInput" placeholder="Cerca città (es. Spitz) o nome..." 
+                    class="flex-1 p-4 rounded-2xl border border-gray-200 focus:ring-4 focus:ring-wachau-green/10 focus:border-wachau-green outline-none text-lg shadow-inner">
+                
+                <div class="flex gap-2">
+                    <button onclick="setCategory('')" id="btn-all" class="flex-1 md:px-6 py-4 rounded-2xl font-bold bg-wachau-dark text-white shadow-lg transition">Tutti</button>
+                    <button onclick="setCategory('Heuriger')" id="btn-heuriger" class="flex-1 md:px-6 py-4 rounded-2xl font-bold bg-white border border-gray-200 hover:bg-gray-50 transition">Mangiare</button>
+                    <button onclick="setCategory('Pensione')" id="btn-pensione" class="flex-1 md:px-6 py-4 rounded-2xl font-bold bg-white border border-gray-200 hover:bg-gray-50 transition">Dormire</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-6xl mx-auto px-4">
+        <div id="loading" class="text-center py-20">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-wachau-green mx-auto mb-4"></div>
+            <p class="text-gray-400">Caricamento dati dal Danubio...</p>
+        </div>
+        
+        <div id="directoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
+            </div>
+    </main>
+
+    <footer class="max-w-6xl mx-auto px-4 mt-20 pt-10 border-t border-gray-200 text-center">
+        <p class="text-wachau-dark font-bold">Eat & Sleep Wachau</p>
+        <p class="text-gray-400 text-sm mt-1">Sviluppato per la sopravvivenza intelligente nella Wachau.</p>
+        <div class="mt-6 inline-block bg-wachau-gold/10 text-wachau-gold px-4 py-2 rounded-full text-xs font-bold uppercase cursor-pointer" onclick="alert('Invia email a: info@eatandsleep.at')">
+            Segnala Orari Errati
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'it', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <script>
+        // --- INCOLLA QUI SOTTO IL TUO LINK CSV ---
+        const SHEET_CSV_URL = 'INSERISCI_QUI_IL_TUO_LINK_CSV';
+        
+        let allData = [];
+        let currentCategory = '';
+
+        function init() {
+            if(SHEET_CSV_URL.includes('INSERISCI_QUI')) {
+                document.getElementById('loading').innerHTML = '<p class="text-red-500 font-bold">Errore: Manca il link del database CSV!</p>';
+                return;
+            }
+
+            Papa.parse(SHEET_CSV_URL, {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    allData = results.data;
+                    document.getElementById('loading').classList.add('hidden');
+                    document.getElementById('directoryGrid').classList.remove('hidden');
+                    renderData(allData);
+                }
+            });
+        }
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            const btns = { '': 'btn-all', 'Heuriger': 'btn-heuriger', 'Pensione': 'btn-pensione' };
+            Object.values(btns).forEach(id => {
+                document.getElementById(id).className = "flex-1 md:px-6 py-4 rounded-2xl font-bold bg-white border border-gray-200 transition";
+            });
+            document.getElementById(btns[cat]).className = "flex-1 md:px-6 py-4 rounded-2xl font-bold bg-wachau-dark text-white shadow-lg transition";
+            filterData();
+        }
+
+        document.getElementById('searchInput').addEventListener('input', filterData);
+
+        function filterData() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allData.filter(item => {
+                const matchesSearch = (item['Nome Attività'] || '').toLowerCase().includes(search) || 
+                                     (item['Località'] || '').toLowerCase().includes(search);
+                const matchesCat = currentCategory === "" || (item['Categoria'] || '').includes(currentCategory);
+                return matchesSearch && matchesCat;
+            });
+            renderData(filtered);
+        }
+
+        function renderData(data) {
+            const grid = document.getElementById('directoryGrid');
+            grid.innerHTML = '';
+
+            data.forEach(item => {
+                if(!item['Nome Attività']) return;
+                const isHeuriger = (item['Categoria'] || '').includes('Heuriger');
+                const badge = isHeuriger ? '🍷 Mangiare' : '🛏️ Dormire';
+                
+                grid.innerHTML += `
+                    <div class="card-hover bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${isHeuriger ? 'bg-red-50 text-red-600 border-red-100' : 'bg-blue-50 text-blue-600 border-blue-100'}">
+                                    ${badge}
+                                </span>
+                                <span class="text-xs font-bold text-wachau-green uppercase">📍 ${item['Località']}</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-wachau-dark mb-2 leading-tight">${item['Nome Attività']}</h3>
+                            
+                            <div class="bg-wachau-cream rounded-2xl p-4 mb-4">
+                                <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">Apertura 2026</p>
+                                <p class="text-sm font-bold text-wachau-dark">${item['Stato/Apertura Aprile 2026'] || 'Da confermare'}</p>
+                            </div>
+                            
+                            <p class="text-sm text-gray-500 mb-6 leading-relaxed">${item['Note (Marille/Vista/Camere)'] || ''}</p>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <a href="${item['Sito Web Struttura']}" target="_blank" class="flex-1 text-center bg-wachau-green text-white py-3 rounded-xl font-bold text-sm hover:opacity-90 transition">Sito Web</a>
+                            ${item['Telefono'] ? `<a href="tel:${item['Telefono']}" class="bg-wachau-cream p-3 rounded-xl hover:bg-gray-200 transition">📞</a>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
