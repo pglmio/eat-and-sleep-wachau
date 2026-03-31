@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eat & Sleep Wachau | Heurigen & Pensionen 2026</title>
+    <title>Eat & Sleep Wachau | Premium Guide 2026</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -14,130 +15,165 @@
                 extend: {
                     colors: {
                         wachau: {
-                            green: '#748A66', // Weinviertel Grün
-                            cream: '#F9F6F0', // Wachauer Stein
-                            gold: '#E5A93D',  // Marille Gold
-                            dark: '#2D3748'   // Anthrazit
+                            sage: '#7D8B6F',
+                            stone: '#F8F7F3',
+                            apricot: '#EAB308',
+                            ink: '#1A1D1A'
                         }
-                    }
+                    },
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
                 }
             }
         }
     </script>
 
     <style>
-        body { background-color: #F9F6F0; scroll-behavior: smooth; font-family: 'Inter', sans-serif; }
-        .card-hover { transition: all 0.25s ease-in-out; }
-        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #748A66; }
-        /* Google Translate Widget Styling */
-        .goog-te-gadget { font-family: inherit !important; color: transparent !important; }
-        .goog-te-gadget .goog-te-combo { padding: 0.6rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; background: white; cursor: pointer; width: 100%; }
-        .goog-logo-link, .goog-te-banner-frame { display: none !important; }
-        body { top: 0px !important; }
+        /* Nasconde totalmente gli elementi intrusivi di Google Translate */
+        body { background-color: #F8F7F3; top: 0px !important; position: static !important; }
+        .goog-te-banner-frame, .skiptranslate, .goog-te-gadget-icon, .goog-logo-link { display: none !important; }
+        #google_translate_element { display: none; }
+        .goog-te-menu-frame { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important; border: none !important; border-radius: 1rem !important; }
+        
+        .glass-nav { background: rgba(248, 247, 243, 0.8); backdrop-filter: blur(12px); }
+        .card-shadow { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(0,0,0,0.03); }
+        .card-shadow:hover { transform: translateY(-8px); box-shadow: 0 30px 60px -12px rgba(125, 139, 111, 0.12); border-color: #7D8B6F; }
+        
+        /* Custom Select Style */
+        .custom-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237D8B6F'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
     </style>
 </head>
-<body class="text-wachau-dark antialiased pb-10">
+<body class="text-wachau-ink">
 
-    <header class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
-        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-wachau-green via-wachau-gold to-wachau-green"></div>
-        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="text-center md:text-left">
-                <h1 class="text-2xl font-extrabold tracking-tight">
-                    Eat & Sleep <span class="text-wachau-green">Wachau</span> 🍷🛏️
-                </h1>
-                <p class="text-xs text-gray-400 font-medium uppercase tracking-widest">Interaktiver Guide 2026</p>
+    <div id="google_translate_element"></div>
+
+    <nav class="glass-nav sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex justify-between items-center">
+            <div class="flex flex-col">
+                <span class="text-2xl font-extrabold tracking-tighter leading-none">EAT<span class="text-wachau-sage">&</span>SLEEP</span>
+                <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-wachau-sage">Wachau Guide</span>
             </div>
-            <div id="google_translate_element" class="scale-90"></div>
+            
+            <div class="flex items-center gap-3">
+                <span class="text-[10px] font-bold text-gray-400 uppercase hidden md:block">Sprache</span>
+                <select onchange="translatePage(this.value)" class="custom-select bg-white border border-gray-100 px-4 py-2 rounded-full text-xs font-bold outline-none cursor-pointer pr-10 shadow-sm">
+                    <option value="de">Deutsch (AT)</option>
+                    <option value="en">English</option>
+                    <option value="it">Italiano</option>
+                    <option value="fr">Français</option>
+                    <option value="es">Español</option>
+                    <option value="nl">Nederlands</option>
+                    <option value="ja">日本語</option>
+                    <option value="zh-CN">简体中文</option>
+                </select>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <section class="max-w-6xl mx-auto px-4 pt-10 pb-6">
-        <div class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100 mb-8">
-            <h2 class="text-3xl font-bold mb-6 text-center md:text-left">Wohin geht's heute?</h2>
-            <div class="flex flex-col md:flex-row gap-4">
-                <input type="text" id="searchInput" placeholder="Ort (z.B. Spitz) oder Name suchen..." 
-                    class="flex-1 p-4 rounded-2xl border border-gray-200 focus:ring-4 focus:ring-wachau-green/10 focus:border-wachau-green outline-none text-lg shadow-inner">
+    <header class="max-w-7xl mx-auto px-6 pt-12 pb-4">
+        <div class="flex flex-col gap-8">
+            <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight max-w-2xl">Entdecke die Wachau. <span class="text-wachau-sage underline decoration-wachau-apricot/30">Echt & Unverfälscht.</span></h2>
+            
+            <div class="flex flex-col lg:flex-row gap-4 w-full">
+                <input type="text" id="searchInput" placeholder="Suchen (z.B. Ort, Name)..." 
+                    class="flex-grow bg-white border-none h-16 px-8 rounded-2xl shadow-xl text-lg outline-none focus:ring-2 focus:ring-wachau-sage/20 transition-all placeholder:text-gray-300">
                 
-                <div class="flex gap-2">
-                    <button onclick="setCategory('')" id="btn-all" class="flex-1 md:px-6 py-4 rounded-2xl font-bold bg-wachau-dark text-white shadow-lg transition">Alle</button>
-                    <button onclick="setCategory('Heuriger')" id="btn-heuriger" class="flex-1 md:px-6 py-4 rounded-2xl font-bold bg-white border border-gray-200 hover:bg-gray-50 transition">Essen</button>
-                    <button onclick="setCategory('Pensione')" id="btn-pensione" class="flex-1 md:px-6 py-4 rounded-2xl font-bold bg-white border border-gray-200 hover:bg-gray-50 transition">Schlafen</button>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="setCategory('')" id="btn-all" class="px-8 py-4 rounded-2xl font-bold text-xs uppercase bg-wachau-ink text-white shadow-lg transition-all">Alle</button>
+                    <button onclick="setCategory('Heuriger')" id="btn-eat" class="px-8 py-4 rounded-2xl font-bold text-xs uppercase bg-white border border-gray-100 hover:bg-gray-50 transition-all">Essen</button>
+                    <button onclick="setCategory('Pensione')" id="btn-sleep" class="px-8 py-4 rounded-2xl font-bold text-xs uppercase bg-white border border-gray-100 hover:bg-gray-50 transition-all">Schlafen</button>
+                    
+                    <select id="cityFilter" onchange="filterData()" class="custom-select px-8 py-4 rounded-2xl font-bold text-xs uppercase bg-white border border-gray-100 outline-none min-w-[160px] pr-10">
+                        <option value="">Alle Orte</option>
+                    </select>
                 </div>
             </div>
         </div>
-    </section>
+    </header>
 
-    <main class="max-w-6xl mx-auto px-4">
-        <div id="loading" class="text-center py-20">
-            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-wachau-green mx-auto mb-4"></div>
-            <p class="text-gray-400">Daten werden geladen...</p>
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div id="loading" class="flex flex-col items-center py-20">
+            <div class="w-10 h-10 border-4 border-wachau-sage border-t-transparent rounded-full animate-spin"></div>
+            <p class="mt-4 text-[10px] font-black uppercase tracking-[0.4em] text-wachau-sage">Synchronisierung</p>
         </div>
         
         <div id="directoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
             </div>
     </main>
 
-    <footer class="max-w-6xl mx-auto px-4 mt-20 pt-10 border-t border-gray-200 text-center">
-        <p class="text-wachau-dark font-bold">Eat & Sleep Wachau</p>
-        <p class="text-gray-400 text-sm mt-1">Smartes Service für das Weltkulturerbe Wachau.</p>
-        <div class="mt-6 inline-block bg-wachau-gold/10 text-wachau-gold px-4 py-2 rounded-full text-xs font-bold uppercase cursor-pointer" onclick="alert('E-Mail an: info@eatandsleep.at')">
-            Fehler melden / Öffnungszeiten korrigieren
+    <footer class="py-20 text-center border-t border-gray-100 bg-white mt-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <p class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-6">Eat & Sleep Wachau 2026</p>
+            <div class="flex justify-center gap-8 text-[10px] font-bold text-wachau-sage uppercase">
+                <a href="#" class="hover:text-wachau-apricot transition">Impressum</a>
+                <a href="#" class="hover:text-wachau-apricot transition">Datenschutz</a>
+                <a href="mailto:info@eatandsleep.at" class="hover:text-wachau-apricot transition">Kontakt</a>
+            </div>
         </div>
     </footer>
 
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'de', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
     <script>
-        // --- DEIN GOOGLE SHEETS CSV LINK HIER EINFÜGEN ---
-        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRZ4k_xaxqvJglAnRAzdC-4Se09VIC7RV8h2CkD_602w8zvtqvB8h1IAVhtxTIOS4_4fmrE9cemzTwB/pub?output=csv';
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRZ4k_xaxqvJglAnRAzdC-4Se09VIC7RV8h2CkD_602w8zvtqvB8h1IAVhtxTIOS4_4fmrE9cemzTwB/pub?output=csv';
         
         let allData = [];
         let currentCategory = '';
 
-        function init() {
-            if(SHEET_CSV_URL.includes('INSERISCI_QUI')) {
-                document.getElementById('loading').innerHTML = '<p class="text-red-500 font-bold">Fehler: CSV-Datenlink fehlt!</p>';
-                return;
-            }
-
-            Papa.parse(SHEET_CSV_URL, {
+        // Data Loader
+        window.onload = () => {
+            Papa.parse(CSV_URL, {
                 download: true,
                 header: true,
                 skipEmptyLines: true,
-                complete: function(results) {
+                complete: (results) => {
                     allData = results.data;
+                    populateCities(allData);
                     document.getElementById('loading').classList.add('hidden');
                     document.getElementById('directoryGrid').classList.remove('hidden');
                     renderData(allData);
                 }
             });
+        };
+
+        function populateCities(data) {
+            const cities = [...new Set(data.map(item => item.Località))].filter(Boolean).sort();
+            const select = document.getElementById('cityFilter');
+            cities.forEach(city => {
+                const opt = document.createElement('option');
+                opt.value = city;
+                opt.textContent = city;
+                select.appendChild(opt);
+            });
         }
 
         function setCategory(cat) {
             currentCategory = cat;
-            const btns = { '': 'btn-all', 'Heuriger': 'btn-heuriger', 'Pensione': 'btn-pensione' };
-            Object.values(btns).forEach(id => {
-                document.getElementById(id).className = "flex-1 md:px-6 py-4 rounded-2xl font-bold bg-white border border-gray-200 transition";
+            const btns = {'': 'btn-all', 'Heuriger': 'btn-eat', 'Pensione': 'btn-sleep'};
+            Object.keys(btns).forEach(key => {
+                const el = document.getElementById(btns[key]);
+                if(key === cat) {
+                    el.className = "px-8 py-4 rounded-2xl font-bold text-xs uppercase bg-wachau-ink text-white shadow-lg transition-all";
+                } else {
+                    el.className = "px-8 py-4 rounded-2xl font-bold text-xs uppercase bg-white border border-gray-100 hover:bg-gray-50 transition-all";
+                }
             });
-            document.getElementById(btns[cat]).className = "flex-1 md:px-6 py-4 rounded-2xl font-bold bg-wachau-dark text-white shadow-lg transition";
             filterData();
         }
 
-        document.getElementById('searchInput').addEventListener('input', filterData);
-
         function filterData() {
             const search = document.getElementById('searchInput').value.toLowerCase();
+            const city = document.getElementById('cityFilter').value;
+
             const filtered = allData.filter(item => {
                 const name = (item['Nome Attività'] || '').toLowerCase();
                 const location = (item['Località'] || '').toLowerCase();
                 const matchesSearch = name.includes(search) || location.includes(search);
-                const matchesCat = currentCategory === "" || (item['Categoria'] || '').includes(currentCategory);
-                return matchesSearch && matchesCat;
+                const matchesCity = !city || item['Località'] === city;
+                
+                // Smart category logic
+                const catValue = (item['Categoria'] || '').toLowerCase();
+                const targetCat = currentCategory.toLowerCase();
+                const matchesCat = !currentCategory || catValue.includes(targetCat) || (targetCat === 'pensione' && (catValue.includes('pension') || catValue.includes('zimmer')));
+
+                return matchesSearch && matchesCity && matchesCat;
             });
             renderData(filtered);
         }
@@ -145,41 +181,56 @@
         function renderData(data) {
             const grid = document.getElementById('directoryGrid');
             grid.innerHTML = '';
-
+            
             data.forEach(item => {
                 if(!item['Nome Attività']) return;
-                const isHeuriger = (item['Categoria'] || '').includes('Heuriger');
-                const badge = isHeuriger ? '🍷 Heuriger' : '🛏️ Pension';
+                const isEat = (item['Categoria'] || '').toLowerCase().includes('heuriger');
                 
                 grid.innerHTML += `
-                    <div class="card-hover bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${isHeuriger ? 'bg-red-50 text-red-600 border-red-100' : 'bg-blue-50 text-blue-600 border-blue-100'}">
-                                    ${badge}
+                    <div class="card-shadow bg-white rounded-[2.5rem] p-8 flex flex-col h-full border border-gray-50 relative">
+                        <div class="mb-8 flex justify-between items-start">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full ${isEat ? 'bg-red-400' : 'bg-blue-400'} animate-pulse"></span>
+                                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
+                                    ${isEat ? 'Essen' : 'Schlafen'}
                                 </span>
-                                <span class="text-xs font-bold text-wachau-green uppercase">📍 ${item['Località']}</span>
                             </div>
-                            <h3 class="text-xl font-bold text-wachau-dark mb-2 leading-tight">${item['Nome Attività']}</h3>
-                            
-                            <div class="bg-wachau-cream rounded-2xl p-4 mb-4">
-                                <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">Status April 2026</p>
-                                <p class="text-sm font-bold text-wachau-dark text-green-700">${item['Stato/Apertura Aprile 2026'] || 'Auf Webseite prüfen'}</p>
-                            </div>
-                            
-                            <p class="text-sm text-gray-500 mb-6 leading-relaxed">${item['Note (Marille/Vista/Camere)'] || ''}</p>
+                            <span class="text-[10px] font-bold text-wachau-sage bg-wachau-stone px-3 py-1 rounded-full uppercase tracking-widest">📍 ${item['Località']}</span>
                         </div>
                         
+                        <h3 class="text-2xl font-extrabold mb-4 leading-tight">${item['Nome Attività']}</h3>
+                        
+                        <div class="mb-6">
+                            <span class="text-[9px] font-black text-gray-300 uppercase tracking-widest block mb-1 text-left">Status April 2026</span>
+                            <div class="inline-block px-4 py-2 bg-green-50 rounded-xl border border-green-100">
+                                <p class="text-xs font-bold text-green-700">${item['Stato/Apertura Aprile 2026'] || 'Auf Anfrage'}</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-sm text-gray-400 leading-relaxed mb-10 flex-grow">${item['Note (Marille/Vista/Camere)'] || ''}</p>
+                        
                         <div class="flex gap-2">
-                            <a href="${item['Sito Web Struttura']}" target="_blank" class="flex-1 text-center bg-wachau-green text-white py-3 rounded-xl font-bold text-sm hover:opacity-90 transition">Webseite</a>
-                            ${item['Telefono'] ? `<a href="tel:${item['Telefono']}" class="bg-wachau-cream p-3 rounded-xl hover:bg-gray-200 transition">📞</a>` : ''}
+                            <a href="${item['Sito Web Struttura']}" target="_blank" class="flex-1 text-center bg-wachau-ink text-white py-4 rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-wachau-sage transition-all">Webseite</a>
+                            ${item['Telefono'] ? `<a href="tel:${item['Telefono']}" class="w-16 bg-wachau-stone flex items-center justify-center rounded-2xl hover:bg-gray-200 transition-colors">📞</a>` : ''}
                         </div>
                     </div>
                 `;
             });
         }
 
-        window.onload = init;
+        // Translation Engine Logic
+        function translatePage(lang) {
+            const select = document.querySelector('.goog-te-combo');
+            if(select) {
+                select.value = lang;
+                select.dispatchEvent(new Event('change'));
+            }
+        }
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'de', autoDisplay: false}, 'google_translate_element');
+        }
     </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
