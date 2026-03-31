@@ -40,6 +40,9 @@
         .card-shadow:hover { transform: scale(1.02); border-color: #F59E0B; box-shadow: 0 30px 60px -12px rgba(245, 158, 11, 0.2); }
         
         .custom-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234F633C'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.2em; }
+
+        /* FIX PER TESTI LUNGHI CHE ESCONO DALLO SCHERMO */
+        .force-wrap { word-break: break-all !important; overflow-wrap: break-word !important; }
     </style>
 </head>
 <body class="text-wachau-dark font-sans antialiased">
@@ -79,11 +82,11 @@
                 class="flex-grow bg-white h-20 px-10 rounded-[2.5rem] text-xl outline-none focus:ring-8 focus:ring-wachau-gold/30 transition-all font-bold placeholder:text-gray-300">
             
             <div class="flex flex-wrap gap-2 p-1">
-                <button onclick="setCategory('')" id="btn-all" class="px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-wachau-gold text-white shadow-lg">Alle</button>
-                <button onclick="setCategory('Heuriger')" id="btn-eat" class="px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-white/10 text-white hover:bg-white/20 transition-all">🍷 Essen</button>
-                <button onclick="setCategory('Pensione')" id="btn-sleep" class="px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-white/10 text-white hover:bg-white/20 transition-all">🛏️ Schlafen</button>
+                <button onclick="setCategory('')" id="btn-all" class="px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-wachau-gold text-white shadow-lg transition-all">Alle</button>
+                <button onclick="setCategory('Heuriger')" id="btn-eat" class="px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-white/10 text-white hover:bg-white/20 transition-all border border-white/5">🍷 Essen</button>
+                <button onclick="setCategory('Pensione')" id="btn-sleep" class="px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-white/10 text-white hover:bg-white/20 transition-all border border-white/5">🛏️ Schlafen</button>
                 
-                <select id="cityFilter" onchange="filterData()" class="custom-select px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-white text-wachau-dark outline-none min-w-[180px] pr-12">
+                <select id="cityFilter" onchange="filterData()" class="custom-select px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-white text-wachau-dark outline-none min-w-[180px] pr-12 transition-all">
                     <option value="">Alle Orte</option>
                 </select>
             </div>
@@ -187,13 +190,13 @@
                 const cat = (item['Categoria'] || '').toLowerCase();
                 const isEat = cat.includes('heurig') || cat.includes('mangiare');
                 
-                // LOGICA PULIZIA DATI (Sito Web)
                 const rawWeb = (item['Sito Web Struttura'] || '').trim();
                 const isWebInvalid = !rawWeb || rawWeb.includes('Verifizieren') || rawWeb.includes('#ERROR!');
                 
-                // LOGICA PULIZIA DATI (Telefono)
                 const rawTel = (item['Telefono'] || '').trim();
                 const isTelInvalid = !rawTel || rawTel.includes('#ERROR!');
+                
+                const statusText = item['Stato/Apertura Aprile 2026'] || 'Check Website';
                 
                 grid.innerHTML += `
                     <div class="card-shadow bg-white rounded-[3rem] p-10 flex flex-col h-full shadow-2xl border border-gray-100">
@@ -208,10 +211,10 @@
                         
                         <div class="mb-8 p-6 bg-wachau-light rounded-[2rem] border-2 border-wachau-gold/5">
                             <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-2">Status April 2026</span>
-                            <p class="text-lg font-black text-wachau-green leading-none">${item['Stato/Apertura Aprile 2026'] || 'Check Website'}</p>
+                            <p class="text-lg font-black text-wachau-green leading-tight force-wrap">${statusText}</p>
                         </div>
                         
-                        <p class="text-sm text-gray-400 font-bold leading-relaxed mb-12 flex-grow italic">"${item['Note (Marille/Vista/Camere)'] || ''}"</p>
+                        <p class="text-sm text-gray-400 font-bold leading-relaxed mb-12 flex-grow italic force-wrap">"${item['Note (Marille/Vista/Camere)'] || ''}"</p>
                         
                         <div class="flex gap-3 pt-6 border-t-2 border-gray-50">
                             ${!isWebInvalid ? `<a href="${rawWeb}" target="_blank" class="flex-1 text-center bg-wachau-dark text-white py-6 rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-wachau-gold transition-all">Webseite</a>` : ''}
