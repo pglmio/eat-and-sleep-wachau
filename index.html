@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EAT & SLEEP WACHAU | Official Guide</title>
+    
+    <title>EAT & SLEEP WACHAU | Official Guide 2026</title>
+    <meta name="description" content="Der interaktive Guide für Heurigen und Unterkünfte in der Wachau. Aktuelle Öffnungszeiten, Karten e Kontakte.">
+    <meta property="og:title" content="EAT & SLEEP WACHAU">
+    <meta property="og:description" content="Finde sofort heraus, wer heute in der Wachau offen hat.">
+    <meta property="og:image" content="logo.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
@@ -40,9 +45,11 @@
         .card-shadow:hover { transform: scale(1.02); border-color: #F59E0B; box-shadow: 0 30px 60px -12px rgba(245, 158, 11, 0.2); }
         
         .custom-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234F633C'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.2em; }
-
-        /* FIX PER TESTI LUNGHI CHE ESCONO DALLO SCHERMO */
         .force-wrap { word-break: break-all !important; overflow-wrap: break-word !important; }
+
+        /* iOS Logo Style */
+        .ios-logo { width: 50px; height: 50px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); object-fit: cover; }
+        @media (min-width: 768px) { .ios-logo { width: 65px; height: 65px; border-radius: 16px; } }
     </style>
 </head>
 <body class="text-wachau-dark font-sans antialiased">
@@ -51,9 +58,12 @@
 
     <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b-4 border-wachau-gold/10 px-6 py-5">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex flex-col">
-                <span class="font-display text-2xl md:text-4xl tracking-tighter leading-none">EAT & SLEEP</span>
-                <span class="text-[10px] font-black uppercase tracking-[0.4em] text-wachau-gold">Wachau • Guide 2026</span>
+            <div class="flex items-center gap-4">
+                <img src="logo.png" alt="EAT & SLEEP Logo" class="ios-logo" onerror="this.style.display='none'">
+                <div class="flex flex-col">
+                    <span class="font-display text-xl md:text-3xl tracking-tighter leading-none">EAT & SLEEP</span>
+                    <span class="text-[10px] font-black uppercase tracking-[0.4em] text-wachau-gold">Wachau • Guide 2026</span>
+                </div>
             </div>
             
             <select onchange="translatePage(this.value)" class="custom-select bg-wachau-dark text-white border-none px-6 py-3 rounded-2xl text-[10px] font-black uppercase outline-none cursor-pointer pr-12 shadow-xl hover:bg-wachau-green transition-all">
@@ -80,14 +90,11 @@
 
     <section class="max-w-7xl mx-auto px-6 mb-16">
         <div class="bg-wachau-dark p-3 rounded-[3rem] shadow-2xl flex flex-col lg:flex-row gap-3">
-            <input type="text" id="searchInput" placeholder="Suchen..." 
-                class="flex-grow bg-white h-20 px-10 rounded-[2.5rem] text-xl outline-none focus:ring-8 focus:ring-wachau-gold/30 transition-all font-bold placeholder:text-gray-300">
-            
+            <input type="text" id="searchInput" placeholder="Suchen..." class="flex-grow bg-white h-20 px-10 rounded-[2.5rem] text-xl outline-none focus:ring-8 focus:ring-wachau-gold/30 transition-all font-bold placeholder:text-gray-300">
             <div class="flex flex-wrap gap-2 p-1">
                 <button onclick="setCategory('')" id="btn-all" class="px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-wachau-gold text-white shadow-lg transition-all">Alle</button>
                 <button onclick="setCategory('Heuriger')" id="btn-eat" class="px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-white/10 text-white hover:bg-white/20 transition-all border border-white/5">🍷 Essen</button>
                 <button onclick="setCategory('Pensione')" id="btn-sleep" class="px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-white/10 text-white hover:bg-white/20 transition-all border border-white/5">🛏️ Schlafen</button>
-                
                 <select id="cityFilter" onchange="filterData()" class="custom-select px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-white text-wachau-dark outline-none min-w-[180px] pr-12 transition-all">
                     <option value="">Alle Orte</option>
                 </select>
@@ -106,26 +113,23 @@
     <footer class="bg-wachau-dark py-24 text-center text-white px-6">
         <div class="font-display text-5xl md:text-7xl mb-10 tracking-tighter leading-none">EAT & SLEEP <br>WACHAU.</div>
         <div class="flex flex-wrap justify-center gap-12 font-black text-xs uppercase tracking-widest text-wachau-gold">
-            <a href="manuel@htlfix.com" class="hover:text-white transition">Kontakt</a>
+            <a href="mailto:manuel@htlfix.com" class="hover:text-white transition">Kontakt</a>
             <a href="#" class="hover:text-white transition">Impressum</a>
             <a href="#" class="hover:text-white transition">Instagram</a>
         </div>
-        <div class="text-[10px] font-medium tracking-[0.2em] uppercase text-gray-500 border-t border-white/5 pt-8">
+        <div class="text-[10px] font-medium tracking-[0.2em] uppercase text-gray-500 border-t border-white/5 pt-8 mt-8">
             Created and developed by <a href="https://pglm.io" class="text-wachau-gold hover:text-white transition">pglm_io</a> for the Wachau
         </div>
     </footer>
 
     <script>
         const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRZ4k_xaxqvJglAnRAzdC-4Se09VIC7RV8h2CkD_602w8zvtqvB8h1IAVhtxTIOS4_4fmrE9cemzTwB/pub?output=csv';
-        
         let allData = [];
         let currentCategory = '';
 
         window.onload = () => {
             Papa.parse(CSV_URL, {
-                download: true,
-                header: true,
-                skipEmptyLines: true,
+                download: true, header: true, skipEmptyLines: true,
                 complete: (results) => {
                     allData = results.data;
                     populateCities(allData);
@@ -141,8 +145,7 @@
             const select = document.getElementById('cityFilter');
             cities.forEach(city => {
                 const opt = document.createElement('option');
-                opt.value = city;
-                opt.textContent = city;
+                opt.value = city; opt.textContent = city;
                 select.appendChild(opt);
             });
         }
@@ -152,9 +155,7 @@
             const btns = {'': 'btn-all', 'Heuriger': 'btn-eat', 'Pensione': 'btn-sleep'};
             Object.keys(btns).forEach(key => {
                 const el = document.getElementById(btns[key]);
-                el.className = (key === cat) 
-                    ? "px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-wachau-gold text-white shadow-lg transition-all"
-                    : "px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-white/10 text-white hover:bg-white/20 transition-all border border-white/5";
+                el.className = (key === cat) ? "px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-wachau-gold text-white shadow-lg transition-all" : "px-10 py-5 rounded-[2rem] font-black text-xs uppercase bg-white/10 text-white hover:bg-white/20 transition-all border border-white/5";
             });
             filterData();
         }
@@ -164,22 +165,15 @@
         function filterData() {
             const search = document.getElementById('searchInput').value.toLowerCase();
             const city = document.getElementById('cityFilter').value;
-
             const filtered = allData.filter(item => {
                 const name = (item['Nome Attività'] || '').toLowerCase();
                 const location = (item['Località'] || '').toLowerCase();
+                const catValue = (item['Categoria'] || '').toLowerCase().trim();
                 const matchesSearch = name.includes(search) || location.includes(search);
                 const matchesCity = !city || item['Località'] === city;
-                
-                const catValue = (item['Categoria'] || '').toLowerCase().trim();
-                const targetCat = currentCategory.toLowerCase();
-                
                 let matchesCat = !currentCategory;
-                if(targetCat === 'heuriger') {
-                    matchesCat = catValue.includes('heurig') || catValue.includes('mangiare');
-                } else if(targetCat === 'pensione') {
-                    matchesCat = catValue.includes('pension') || catValue.includes('zimmer') || catValue.includes('hotel') || catValue.includes('dormire');
-                }
+                if(currentCategory.toLowerCase() === 'heuriger') matchesCat = catValue.includes('heurig') || catValue.includes('mangiare');
+                else if(currentCategory.toLowerCase() === 'pensione') matchesCat = catValue.includes('pension') || catValue.includes('zimmer') || catValue.includes('hotel') || catValue.includes('dormire');
                 return matchesSearch && matchesCity && matchesCat;
             });
             renderData(filtered);
@@ -189,20 +183,38 @@
             const grid = document.getElementById('directoryGrid');
             grid.innerHTML = '';
             
+            const oggi = new Date();
+            oggi.setHours(0,0,0,0);
+
             data.forEach(item => {
                 if(!item['Nome Attività']) return;
                 
                 const cat = (item['Categoria'] || '').toLowerCase();
                 const isEat = cat.includes('heurig') || cat.includes('mangiare');
-                
                 const rawWeb = (item['Sito Web Struttura'] || '').trim();
                 const isWebInvalid = !rawWeb || rawWeb.includes('Verifizieren') || rawWeb.includes('#ERROR!');
-                
                 const rawTel = (item['Telefono'] || '').trim();
                 const isTelInvalid = !rawTel || rawTel.includes('#ERROR!');
-                
-                const statusText = item['Stato/Apertura Aprile 2026'] || 'Check Website';
-                
+
+                // --- LOGICA STATUS AUTOMATICO ---
+                const inizio = item['Apre_Il'] ? new Date(item['Apre_Il']) : null;
+                const fine = item['Chiude_Il'] ? new Date(item['Chiude_Il']) : null;
+                let statusMsg = item['Stato/Apertura Aprile 2026'] || 'Check Website';
+                let statusColor = 'text-wachau-green';
+
+                if (inizio && fine) {
+                    if (oggi >= inizio && oggi <= fine) {
+                        statusMsg = "✅ OFFEN (Saisonal)";
+                        statusColor = "text-wachau-green";
+                    } else {
+                        statusMsg = "❌ GESCHLOSSEN";
+                        statusColor = "text-red-500";
+                    }
+                }
+
+                // --- GOOGLE MAPS LINK ---
+                const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item['Nome Attività'] + ' ' + item['Località'])}`;
+
                 grid.innerHTML += `
                     <div class="card-shadow bg-white rounded-[3rem] p-10 flex flex-col h-full shadow-2xl border border-gray-100">
                         <div class="mb-8 flex justify-between items-center">
@@ -211,31 +223,24 @@
                             </span>
                             <span class="text-[10px] font-black text-wachau-green bg-wachau-light px-4 py-2 rounded-full border-2 border-wachau-green/5">📍 ${item['Località']}</span>
                         </div>
-                        
                         <h3 class="text-4xl font-extrabold mb-6 leading-[0.9] tracking-tighter text-wachau-dark">${item['Nome Attività']}</h3>
-                        
                         <div class="mb-8 p-6 bg-wachau-light rounded-[2rem] border-2 border-wachau-gold/5">
-                            <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-2">Status April 2026</span>
-                            <p class="text-lg font-black text-wachau-green leading-tight force-wrap">${statusText}</p>
+                            <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-2">Aktueller Status</span>
+                            <p class="text-lg font-black ${statusColor} leading-tight force-wrap">${statusMsg}</p>
                         </div>
-                        
                         <p class="text-sm text-gray-400 font-bold leading-relaxed mb-12 flex-grow italic force-wrap">"${item['Note (Marille/Vista/Camere)'] || ''}"</p>
-                        
-                        <div class="flex gap-3 pt-6 border-t-2 border-gray-50">
-                            ${!isWebInvalid ? `<a href="${rawWeb}" target="_blank" class="flex-1 text-center bg-wachau-dark text-white py-6 rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-wachau-gold transition-all">Webseite</a>` : ''}
-                            ${!isTelInvalid ? `<a href="tel:${rawTel}" class="w-20 bg-wachau-light flex items-center justify-center rounded-[1.5rem] border-2 border-wachau-dark/5 hover:scale-105 transition-all text-2xl">📞</a>` : ''}
+                        <div class="flex gap-2 pt-6 border-t-2 border-gray-50">
+                            ${!isWebInvalid ? `<a href="${rawWeb}" target="_blank" class="flex-1 text-center bg-wachau-dark text-white py-5 rounded-[1.5rem] font-black text-[9px] uppercase tracking-widest hover:bg-wachau-gold transition-all">Web</a>` : ''}
+                            <a href="${mapLink}" target="_blank" class="flex-1 text-center bg-white text-wachau-dark border-2 border-wachau-dark py-5 rounded-[1.5rem] font-black text-[9px] uppercase tracking-widest hover:bg-wachau-green hover:text-white hover:border-wachau-green transition-all">Karte</a>
+                            ${!isTelInvalid ? `<a href="tel:${rawTel}" class="w-16 bg-wachau-light flex items-center justify-center rounded-[1.5rem] border-2 border-wachau-dark/5 hover:scale-105 transition-all text-xl">📞</a>` : ''}
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
         function translatePage(lang) {
             const select = document.querySelector('.goog-te-combo');
-            if(select) {
-                select.value = lang;
-                select.dispatchEvent(new Event('change'));
-            }
+            if(select) { select.value = lang; select.dispatchEvent(new Event('change')); }
         }
 
         function googleTranslateElementInit() {
